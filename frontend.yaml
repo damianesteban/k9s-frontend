@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v0
+      kind: Mapping
+      name: frontend_mapping
+      prefix: /
+      service: frontend
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 80
+      name: frontend-api
+      targetPort: http-api
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: damianesteban/k-frontend-projects:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http-api
+          containerPort: 5000
