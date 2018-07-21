@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: damianesteban/k-frontend-projects:latest
+        image: damianesteban/k-frontend-projects:master
         imagePullPolicy: Always
         ports:
         - name: http-api
